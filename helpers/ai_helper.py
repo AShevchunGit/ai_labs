@@ -37,7 +37,6 @@ class AIHelper:
     def chain_invoke(self, query):
         prompt = self.get_prompt(query)
         documents = self.get_relevant_docs(query)
-        print(len(documents))
 
         chain = self.get_chain(self.llm, prompt)
         return chain.invoke({"context": documents})

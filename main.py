@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, flash, redirect
 from werkzeug.utils import secure_filename
 import pandas as pd
 import random
+import markdown
 
 from dotenv import load_dotenv
 
@@ -24,25 +25,8 @@ ai_helper = AIHelper(db)
 csvLoader = CSVLoader(ai_helper, db)
 
 
-## ===================
-## Load the CSV file
-## TODO: add upload button and use it
-# csvLoader = CSVLoader(ai_helper, db)
-# csvLoader.upload_csv("./cvs/Resume.csv")
-## ===================
-
 # get from db
 rows = db.get_unique_records()
-
-
-# query = "What is this candidate's Daniel Williams? Please return the answer in a concise manner, no more than 250 words. If not found, return 'Not provided'"
-query = "What are the primary roles and responsibilities Daniel Taylor has undertaken throughout his career?"
-
-# docs = ai_helper.get_relevant_docs(query)
-# print(docs)
-
-result = ai_helper.chain_invoke(query)
-print(result)
 
 @app.route('/')
 def cv_list():
@@ -51,12 +35,17 @@ def cv_list():
 @app.route('/cv/<int:cv_id>')
 def cv_detail(cv_id):
     # Render the CV detail template
-    
     for cv in rows:
         if cv["ID"] == cv_id:
             break
     
-    return render_template('cv_detail.html', cv=cv)
+    resume = cv.get("Resume_html")
+    query = "What are the primary roles and responsibilities has undertaken throughout his/her career, weak and strong areas?  Base on the resume context "+resume
+    result = ai_helper.chain_invoke(query)
+    html = markdown.markdown(result)
+    
+    
+    return render_template('cv_detail.html', cv=cv, result=html)
 
 def allowed_file(filename):
     return '.' in filename and \

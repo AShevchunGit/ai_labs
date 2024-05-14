@@ -14,6 +14,10 @@
       <a href="/" class="btn btn-primary mt-3">Back to CV List</a>
       <h1>CV Detail</h1>
       <ul class="list-group">
+        <li class="list-group-item"><h3>Resume Summary:</h3></li>
+        <li class="list-group-item">{{ result | safe }}</li>
+        <li class="list-group-item"><hr /></li>
+
         <li class="list-group-item">{{ cv.ID }}</li>
         <li class="list-group-item">{{ cv.Candidate_Name }}</li>
         <li class="list-group-item">{{ cv.Resume_html | safe }}</li>
