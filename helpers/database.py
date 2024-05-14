@@ -1,9 +1,6 @@
-
-
 import os
 from langchain_community.vectorstores import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
-# from langchain_openai import OpenAIEmbeddings
 
 class Database:
     def __init__(self):

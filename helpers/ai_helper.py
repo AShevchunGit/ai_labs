@@ -51,9 +51,3 @@ class AIHelper:
 
     def get_embedings(self):
         return OpenAIEmbeddings(disallowed_special=())
-
-
-
-
-    def get_response(self, query):
-        pass
