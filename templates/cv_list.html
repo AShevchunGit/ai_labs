@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV List</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+        .file-input {
+            display: none;
+        }
+    </style>    
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+      <h1>List of CVs</h1>
+
+      <form method="post" enctype="multipart/form-data" action="/upload" id="upload-form">
+        <input type="file" name="file" class="file-input" id="file-input">
+        <button type="submit" class="btn btn-primary" id="upload-button">Upload CSV</button>
+      </form>
+      <div id="loading" style="display: none;">
+        <h2>Loading....</h2>
+      </div>
+      
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Candidate Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cv in cvs %}
+          <tr>
+            <td>
+              <a href="{{ url_for('cv_detail', cv_id=cv.ID) }}"
+                >{{ cv.ID }}</a
+              >
+            </td>
+            <td>{{cv.Candidate_Name}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('upload-button').disabled = false;
+        });
+
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('upload-button').disabled = true;
+        });
+
+        document.getElementById('upload-button').addEventListener('click', function(e) {
+            var fileInput = document.getElementById('file-input');
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                fileInput.click();
+            }
+        });
+
+        document.getElementById('file-input').addEventListener('change', function() {
+            if (this.files.length !== 0) {
+                document.getElementById('upload-form').submit();
+            }
+        });
+    </script>
+
+  </body>
+</html>
