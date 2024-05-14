@@ -4,21 +4,14 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 import random
 
+from dotenv import load_dotenv
+
 from helpers.loader import CSVLoader
 from helpers.ai_helper import AIHelper
 from helpers.database import Database
 
+load_dotenv()
 
-### Set the environment variables
-# os.environ["OPENAI_API_KEY"]
-# os.environ["MONGODB_ATLAS_CLUSTER_URI"]
-# os.environ["DB_NAME"]
-# os.environ["COLLECTION_NAME"]
-# os.environ["ATLAS_VECTOR_SEARCH_INDEX_NAME"]
-
-
-
-# from langchain_community.document_loaders import DataFrameLoader
 
 ALLOWED_EXTENSIONS = {'csv'}
 
